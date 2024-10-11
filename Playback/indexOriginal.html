@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1D Motion Simulation with Reset</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dat.gui/build/dat.gui.min.js"></script>
+
+<script>
+    // Create the scene, camera, and renderer
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Create the box geometry
+    let geometry = new THREE.BoxGeometry(1, 1, 1);
+    let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    let box = new THREE.Mesh(geometry, material);
+    scene.add(box);
+
+    // Position the camera
+    camera.position.z = 5;
+
+    // Control variables
+    let params = {
+        initialPosition: 0,
+        initialVelocity: 1,
+        play: function() { playing = true; },
+        stop: function() { playing = false; },
+        reset: function() {
+            // Reset the animation to the initial values
+            time = 0;
+            simulationTime = 0;
+            box.position.x = initialPosition;
+            params.playback = 0;
+            playing = false;
+        },
+        playback: 0
+    };
+
+    let initialPosition = params.initialPosition;
+    let initialVelocity = params.initialVelocity;
+    let time = 0;
+    let playing = false;
+    let simulationTime = 0;
+
+    // Create a dat.GUI interface
+    let gui = new dat.GUI();
+    gui.add(params, 'initialPosition', -5, 5).name('Initial Position').onChange(value => {
+        initialPosition = value;
+        if (!playing) {
+            box.position.x = value;
+            time = 0;
+            simulationTime = 0;
+        }
+    });
+    gui.add(params, 'initialVelocity', -5, 5).name('Initial Velocity').onChange(value => {
+        initialVelocity = value;
+    });
+    gui.add(params, 'play').name('Play');
+    gui.add(params, 'stop').name('Stop');
+    gui.add(params, 'reset').name('Reset');
+    gui.add(params, 'playback', 0, 10).name('Playback').listen().onChange(value => {
+        if (!playing) {
+            box.position.x = initialPosition + initialVelocity * value;
+            simulationTime = value;
+        }
+    });
+
+    // Update function
+    function animate() {
+        requestAnimationFrame(animate);
+
+        if (playing) {
+            time += 0.01;
+            box.position.x = initialPosition + initialVelocity * time;
+            params.playback = time;
+        }
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+</script>
+</body>
+</html>

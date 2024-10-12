@@ -26,7 +26,7 @@ const verticalLinePlugin = {
         ctx.stroke();
         ctx.restore();
         
-        // Display the intersection on the cursor
+        // Display the value on cursor intersection
         const yValue = positionChart.data.datasets[0].data[xValue*10]; // get the y value
         const yPixel = chart.scales.y.getPixelForValue(yValue);        // get the correct scale for displaying y value
         ctx.fillStyle = 'red';

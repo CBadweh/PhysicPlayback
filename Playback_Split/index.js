@@ -22,7 +22,6 @@ scene.add( gridHelper );
 // Position the camera
 camera.position.z = 80;
 
-
 // Control variables
 let params = {
     initialPosition: 0,
@@ -72,6 +71,7 @@ gui.add(params, 'playback', 0, 100, 1).name('Playback').listen().onChange(value 
         box.position.x = chart.positionData[value*10];
         simulationTime = value*10; // *10 is to match time += 0.1;
         console.log(value*10)
+        chart.slider(value);
         
     }
 });

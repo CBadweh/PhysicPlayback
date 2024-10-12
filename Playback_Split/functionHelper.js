@@ -1,6 +1,32 @@
 // Chart.js setup
 let positionData = [];
 const ctx = document.getElementById('positionChart').getContext('2d');
+
+
+// Initial position of the vertical line (as a percentage)
+let verticalLinePosition = 50;
+
+// Plugin to draw a vertical line and display intersection values
+const verticalLinePlugin = {
+    id: 'verticalLine',
+    afterDraw: (chart) => {
+        const ctx = chart.ctx;
+        const xValue = Number(verticalLinePosition);
+        const xPixel = chart.scales.x.getPixelForValue(xValue);
+
+        // Draw the vertical line
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(xPixel, chart.chartArea.top);
+        ctx.lineTo(xPixel, chart.chartArea.bottom);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+        ctx.restore();
+    }
+};
+
+
 let positionChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -14,6 +40,10 @@ let positionChart = new Chart(ctx, {
         }]
     },
     options: {
+        responsive: true,
+        plugins: {
+            verticalLine: {} // Activate the plugin
+        },
         scales: {
             x: {
                 type: 'linear',
@@ -31,7 +61,8 @@ let positionChart = new Chart(ctx, {
                 }
             }
         }
-    }
+    },
+    plugins: [verticalLinePlugin]
 });
 
 // Function to update the chart with the current time and position
@@ -49,6 +80,11 @@ function resetChart() {
     positionChart.update();  // Update the chart
 }
 
+function slider(val) {
+    verticalLinePosition = val;
+    positionChart.update();
+}
 
 
-export {resetChart, updateChart,  positionChart,positionData };
+
+export {resetChart, updateChart,  positionChart, positionData, slider };

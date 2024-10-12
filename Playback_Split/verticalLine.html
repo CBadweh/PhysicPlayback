@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart.js Vertical Line with Slider</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="myChart" width="600" height="400"></canvas>
+    <input type="range" id="linePosition" min="0" max="100" value="50" style="width: 600px;">
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        // Initial position of the vertical line (as a percentage)
+        let verticalLinePosition = 50;
+
+        // Plugin to draw a vertical line and display intersection values
+        const verticalLinePlugin = {
+            id: 'verticalLine',
+            afterDraw: (chart) => {
+                const ctx = chart.ctx;
+                const xValue = Number(verticalLinePosition);
+                const xPixel = chart.scales.x.getPixelForValue(xValue);
+
+                // Draw the vertical line
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(xPixel, chart.chartArea.top);
+                ctx.lineTo(xPixel, chart.chartArea.bottom);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'red';
+                ctx.stroke();
+                ctx.restore();
+
+                // Display the intersection point value(s)
+                chart.data.datasets.forEach((dataset, index) => {
+                    // Find the y-value corresponding to the xValue
+                    const dataIndex = chart.data.labels.indexOf(xValue);
+                    if (dataIndex !== -1) {
+                        const yValue = dataset.data[dataIndex];
+                        const yPixel = chart.scales.y.getPixelForValue(yValue);
+
+                        // Draw the value at the intersection point
+                        ctx.fillStyle = 'black';
+                        ctx.font = '12px Arial';
+                        ctx.fillText(`(${xValue}, ${yValue.toFixed(2)})`, xPixel + 5, yPixel - 5);
+                    }
+                });
+            }
+        };
+
+        // Chart.js configuration
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 101 }, (_, i) => i), // Labels from 0 to 100
+                datasets: [{
+                    label: 'Sample Data',
+                    data: Array.from({ length: 101 }, () => Math.random() * 100), // Random data for demonstration
+                    borderColor: 'blue',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    verticalLine: {} // Activate the plugin
+                },
+                scales: {
+                    x: {
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            stepSize: 10 // Example step size for better viewing
+                        }
+                    }
+                }
+            },
+            plugins: [verticalLinePlugin]
+        });
+
+        // Update the vertical line's position when the slider changes
+        document.getElementById('linePosition').addEventListener('input', (event) => {
+            verticalLinePosition = event.target.value;
+            myChart.update(); // Update the chart to redraw the vertical line
+        });
+    </script>
+</body>
+</html>

@@ -70,13 +70,11 @@ gui.add(params, 'playback', 0, 100, 1).name('Playback').listen().onChange(value 
     if (!playing) {
         box.position.x = chart.positionData[value*10];
         simulationTime = value*10; // *10 is to match time += 0.1;
-        console.log(value*10)
-        chart.slider(value);
+        // console.log(value)
+        chart.slider(value); // send slider value to functionHelper.js file
         
     }
 });
-
-
 
 // Update function
 

@@ -13,6 +13,8 @@ const verticalLinePlugin = {
         const ctx = chart.ctx;
         const xValue = Number(verticalLinePosition);
         const xPixel = chart.scales.x.getPixelForValue(xValue);
+        console.log('xPixel: %d', xPixel);
+        console.log('xValue: %d', xValue);
 
         // Draw the vertical line
         ctx.save();
@@ -23,6 +25,14 @@ const verticalLinePlugin = {
         ctx.strokeStyle = 'red';
         ctx.stroke();
         ctx.restore();
+        
+        // Display the intersection on the cursor
+        const yValue = positionChart.data.datasets[0].data[xValue*10]; // get the y value
+        const yPixel = chart.scales.y.getPixelForValue(yValue);        // get the correct scale for displaying y value
+        ctx.fillStyle = 'red';
+        ctx.font = '15px Arial';
+        ctx.fillText(`(${xValue}, ${yValue})`,xPixel + 5, yPixel -5 ); // Display x and y values on the cursor 
+
     }
 };
 
@@ -81,6 +91,7 @@ function resetChart() {
 }
 
 function slider(val) {
+    console.log('val: %d',val);
     verticalLinePosition = val;
     positionChart.update();
 }

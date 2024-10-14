@@ -52,7 +52,24 @@ let positionChart = new Chart(ctx, {
     options: {
         responsive: true,
         plugins: {
-            verticalLine: {} // Activate the plugin
+            verticalLine: {}, // Activate the plugin
+            zoom: {
+                zoom: {
+                    wheel: {
+                        enabled: true // Enable zooming with the mouse wheel
+                    },
+                    pinch: {
+                        enabled: true // Enable zooming on mobile devices
+                    },
+                    mode: 'xy' // Allow zooming both axes
+                },
+                pan: {
+                    enabled: true, // Enable panning
+                    mode: 'x', // Allow panning both axes
+                    modifierKey: 'ctrl',
+                    threshold: 5,
+                }
+            }
         },
         scales: {
             x: {
@@ -90,6 +107,7 @@ function resetChart() {
     positionChart.update();  // Update the chart
 }
 
+// Function to pass 'Playback' value from index.js to this file.
 function slider(val) {
     console.log('val: %d',val);
     verticalLinePosition = val;

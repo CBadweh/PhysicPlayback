@@ -14,9 +14,9 @@ let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 let box = new THREE.Mesh(geometry, material);
 scene.add(box);
 
-const gridHelper = new THREE.GridHelper( 100, 10 );
-gridHelper.rotation.x=Math.PI/2;
-scene.add( gridHelper );
+// const gridHelper = new THREE.GridHelper( 100, 10 );
+// gridHelper.rotation.x=Math.PI/2;
+// scene.add( gridHelper );
 
 
 // Position the camera
@@ -85,10 +85,11 @@ function animate() {
         time += 0.1;
         // let currentPosition = initialPosition + initialVelocity * time;
         let currentPosition = 20*Math.sin(0.1*time);
+        let velPosition = 2*Math.cos(0.1*time);
 
         box.position.x = currentPosition;
         params.playback = time;
-        chart.updateChart(time, currentPosition);  // Update chart
+        chart.updateChart(time, currentPosition, velPosition);  // Update chart
     }
 
     renderer.render(scene, camera);

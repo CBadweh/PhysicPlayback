@@ -6,8 +6,9 @@ let velocityData = [];
 const positionCtx = document.getElementById('positionChart').getContext('2d');
 const velocityCtx = document.getElementById('velocityChart').getContext('2d');
 
-
-// ====================== CHART JS ======================
+// ==================================================================
+//                            CHART JS 
+// ==================================================================
 // Initial position of the vertical line (as a percentage)
 let verticalLinePosition = 50;
 
@@ -184,8 +185,9 @@ let velocityChart = new Chart(velocityCtx, {
     plugins: [velocityPlugin]
 });
 
-
-// ====================== FUNCTIONS: interface the two files ======================
+// ==============================================================================
+//                       FUNCTIONS: interface the two files 
+// ==============================================================================
 // Function to update the chart with the current time and position
 function updateChart(time, position, velPosition) {
     positionChart.data.labels.push(time.toFixed(2));  // Add time to labels

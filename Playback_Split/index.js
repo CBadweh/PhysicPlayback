@@ -1,7 +1,9 @@
 
 import * as chart from './functionHelper.js';
 
-// ====================== THREEjs SETUP ======================
+// ==================================================================
+//                            THREEjs SETUP 
+// ==================================================================
 // Create the scene, camera, and renderer
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -19,8 +21,9 @@ scene.add(box);
 camera.position.z = 80;
 
 
-
-// ====================== dat.GUI ======================
+// ==================================================================
+//                             dat.GUI 
+// ==================================================================
 // Control variables
 let params = {
     initialPosition: 0,
@@ -75,8 +78,9 @@ gui.add(params, 'playback', 0, 100, 1).name('Playback').listen().onChange(value 
     }
 });
 
-
-// ====================== ANIMATE  ======================
+// ==================================================================
+//                              ANIMATE 
+// ==================================================================
 // Update function
 function animate() {
     requestAnimationFrame(animate);

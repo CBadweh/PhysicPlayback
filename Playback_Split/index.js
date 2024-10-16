@@ -1,6 +1,7 @@
 
 import * as chart from './functionHelper.js';
 
+// ====================== THREEjs SETUP ======================
 // Create the scene, camera, and renderer
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -14,14 +15,12 @@ let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 let box = new THREE.Mesh(geometry, material);
 scene.add(box);
 
-// const gridHelper = new THREE.GridHelper( 100, 10 );
-// gridHelper.rotation.x=Math.PI/2;
-// scene.add( gridHelper );
-
-
 // Position the camera
 camera.position.z = 80;
 
+
+
+// ====================== dat.GUI ======================
 // Control variables
 let params = {
     initialPosition: 0,
@@ -76,8 +75,9 @@ gui.add(params, 'playback', 0, 100, 1).name('Playback').listen().onChange(value 
     }
 });
 
-// Update function
 
+// ====================== ANIMATE  ======================
+// Update function
 function animate() {
     requestAnimationFrame(animate);
 

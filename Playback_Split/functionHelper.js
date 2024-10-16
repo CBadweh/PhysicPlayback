@@ -1,14 +1,17 @@
 // Chart.js setup
+
+
 let positionData = [];
 let velocityData = [];
-const ctx = document.getElementById('positionChart').getContext('2d');
-const vctx = document.getElementById('velocityChart').getContext('2d');
+const positionCtx = document.getElementById('positionChart').getContext('2d');
+const velocityCtx = document.getElementById('velocityChart').getContext('2d');
 
 
+// ====================== CHART JS ======================
 // Initial position of the vertical line (as a percentage)
 let verticalLinePosition = 50;
 
-// Plugin to draw a vertical line and display intersection values
+// Position Plugin to draw a vertical line and display intersection values
 const verticalLinePlugin = {
     id: 'verticalLine',
     afterDraw: (chart) => {
@@ -38,8 +41,8 @@ const verticalLinePlugin = {
     }
 };
 
-
-let positionChart = new Chart(ctx, {
+// Position Chart
+let positionChart = new Chart(positionCtx, {
     type: 'line',
     data: {
         labels: [], // Time values
@@ -95,9 +98,7 @@ let positionChart = new Chart(ctx, {
 });
 
 
-
-
-
+// Velocity Plugin to draw a vertical line and display intersection values
 const velocityPlugin = {
     id: 'velVerticalLine',
     afterDraw: (chart) => {
@@ -127,7 +128,8 @@ const velocityPlugin = {
     }
 };
 
-let velocityChart = new Chart(vctx, {
+// Velocity Chart
+let velocityChart = new Chart(velocityCtx, {
     type: 'line',
     data: {
         labels: [], // Time values
@@ -183,9 +185,7 @@ let velocityChart = new Chart(vctx, {
 });
 
 
-
-
-
+// ====================== FUNCTIONS: interface the two files ======================
 // Function to update the chart with the current time and position
 function updateChart(time, position, velPosition) {
     positionChart.data.labels.push(time.toFixed(2));  // Add time to labels
@@ -200,11 +200,11 @@ function updateChart(time, position, velPosition) {
 // Function to reset the chart when simulation is reset
 function resetChart() {
     positionData = [];
-    velocityData = [];
     positionChart.data.labels = [];  // Clear time labels
     positionChart.data.datasets[0].data = positionData;  // Clear position data
     positionChart.update();  // Update the chart
 
+    velocityData = [];
     velocityChart.data.labels = [];  // Clear time labels
     velocityChart.data.datasets[0].data = velocityData;  // Clear position data
     velocityChart.update();  // Update the chart
@@ -217,7 +217,5 @@ function slider(val) {
     positionChart.update();
     velocityChart.update();
 }
-
-
 
 export {resetChart, updateChart,  positionChart, positionData, slider };
